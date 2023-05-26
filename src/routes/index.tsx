@@ -34,7 +34,6 @@ export function routeData() {
         },
       });
       const { result: hash } = block_hash;
-      console.log(hash)
 
       const { data: block_data } = await axios.post(import.meta.env.VITE_SOLID_APP_RPC_URL, generatePayload('getblock',[hash]), {
         headers: {

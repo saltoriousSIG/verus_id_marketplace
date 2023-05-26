@@ -14,15 +14,12 @@ export function Expires(props: ExpiresType) {
   const { block } = useRouteData<typeof routeData>();
 
   const timeExpires = createMemo(() => {
-    console.log(expires);
     const { height } = block();
-    console.log(height);
     const difference = expires - height;
     const time_in_minutes = difference * 1;
     return dateMath.add(new Date(), time_in_minutes, "minutes").toDateString();
   });
 
-  console.log(timeExpires());
   return (
     <div class="container">
       <Typography>Expires: {timeExpires()}</Typography>
