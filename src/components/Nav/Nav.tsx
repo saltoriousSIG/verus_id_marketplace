@@ -11,7 +11,7 @@ export default function Nav() {
 
   return (
     <NavbarContainer>
-      <SiteTitle>Verus IDS</SiteTitle>
+      <SiteTitle>Verus IDS Listed Now</SiteTitle>
     </NavbarContainer>
   );
 }
