@@ -7,12 +7,13 @@ import generatePayload from "~/utils/generatePayload";
 export function routeData() {
   const [ids] = createResource(async () => {
     try {
-      const { data: vrsc_id_data } = await axios.post("http://157.230.91.189:8000", generatePayload('getoffers',["VRSC", "true", "false"]), {
+      const { data: vrsc_id_data } = await axios.post(import.meta.env.VITE_SOLID_APP_RPC_URL, generatePayload('getoffers',["VRSC", "true", "false"]), {
         headers: {
           ["Content-Type"]: "application/json",
         },
       });
 
+      console.log(vrsc_id_data);
       const { result } = vrsc_id_data;
       
       const keys = Object.keys(result);
@@ -28,20 +29,22 @@ export function routeData() {
   const [block] = createResource(async() => {
 
     try{
-      const { data: block_hash } = await axios.post("http://157.230.91.189:8000", generatePayload('getbestblockhash',[]), {
+      const { data: block_hash } = await axios.post(import.meta.env.VITE_SOLID_APP_RPC_URL, generatePayload('getbestblockhash',[]), {
         headers: {
           ["Content-Type"]: "application/json",
         },
       });
       const { result: hash } = block_hash;
+      console.log(hash)
 
-      const { data: block_data } = await axios.post("http://157.230.91.189:8000", generatePayload('getblock',[hash]), {
+      const { data: block_data } = await axios.post(import.meta.env.VITE_SOLID_APP_RPC_URL, generatePayload('getblock',[hash]), {
         headers: {
           ["Content-Type"]: "application/json",
         },
       });
 
       const { result } = block_data;
+
 
       return result;
 
@@ -54,7 +57,7 @@ export function routeData() {
 
 export default function Home() {
   const { ids } = useRouteData<typeof routeData>();
-  console.log(ids());
+  console.log(ids(), 'ids');
   if (typeof ids() === "string")
     return <div>There was an issue fetching the ids!</div>;
   return (
