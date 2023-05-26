@@ -13,7 +13,6 @@ export function routeData() {
         },
       });
 
-      console.log(vrsc_id_data);
       const { result } = vrsc_id_data;
       
       const keys = Object.keys(result);
@@ -44,8 +43,6 @@ export function routeData() {
       });
 
       const { result } = block_data;
-
-
       return result;
 
     } catch(e:any){
@@ -57,8 +54,7 @@ export function routeData() {
 
 export default function Home() {
   const { ids } = useRouteData<typeof routeData>();
-  console.log(ids(), 'ids');
-  if (typeof ids() === "string")
+   if (typeof ids() === "string")
     return <div>There was an issue fetching the ids!</div>;
   return (
     <main>
