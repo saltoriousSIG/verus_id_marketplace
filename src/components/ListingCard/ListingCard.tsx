@@ -21,14 +21,12 @@ const flags: Record<string, string> = {
   '0': ''
 }
 
-
-
 export default function ListingCard(props: CardProps) {
   const { iid, name, currency, price, expires } = props;
   const { block } = useRouteData<typeof routeData>();
-
   const [isExpanded, setIsExpanded] = createSignal();
   const [identityData, setIdentityData] = createSignal<any>();
+  
   const handleClick = () => {
     setIsExpanded(!isExpanded());
     if (isExpanded()) getidentityInfo(iid, block()).then((data) => {
@@ -50,8 +48,7 @@ export default function ListingCard(props: CardProps) {
       canspendfor:identityData()?.canspendfor, 
       cansignfor: identityData()?.cansignfor, 
     }
-  })
-
+  });
 
   return (
     <Card
@@ -63,11 +60,9 @@ export default function ListingCard(props: CardProps) {
         <Typography>Price: {price} VRSC</Typography>
         <Expires expires={expires} />
       </CardInfo>
-
       {isExpanded() ? (
         <AdditionalInfo>
           <Typography size={14} weight={300}>Listed: ~{id()?.created} days ago</Typography>
-
         </AdditionalInfo>
       ) : null}
     </Card>

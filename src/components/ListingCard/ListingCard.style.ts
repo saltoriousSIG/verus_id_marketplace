@@ -55,7 +55,7 @@ export const CardTitle = styled("h2")<TitleProps>`
   -webkit-text-fill-color: ${(props) =>
     !doesntContaineEmoji(props.value) ? "unset" : "transparent"};
   font-weight: bold;
-  font-size: 20px;
+  font-size: ${props => !doesntContaineEmoji(props.value) ? '30px' : '20px'};
   margin: 0;
   margin-bottom: 10px;
 `;
