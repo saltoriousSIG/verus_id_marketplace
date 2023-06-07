@@ -13,12 +13,12 @@ type CardProps = {
   expires: number;
 };
 
-const flags: Record<number, string> = { 
-  8: 'revoked',
-  4: 'tokenized id control',
-  2: 'flag locked',
-  1: 'has issues currency',
-  0: 'none'
+const flags: Record<string, string> = { 
+  '8000': ' 🚩 Revoked',
+  '4': '🏁 Tokenized ID Control',
+  '2': '🏴 Flag Locked',
+  '1': '🏳️ Has Issued Currency',
+  '0': ''
 }
 
 
@@ -41,13 +41,12 @@ export default function ListingCard(props: CardProps) {
     const { blockheight } = identityData() || {}
     const num_blocks_since_created = height - blockheight;
     const approx_num_days_since_created = Math.floor(num_blocks_since_created / 1440);
-    console.log(flags[identityData()?.identity.flags])
     return { 
       id: iid,
       created:  approx_num_days_since_created,
       revocationauthority: identityData()?.identity.revocationauthority,
       recoveryauthority: identityData()?.identity.recoveryauthority,
-      flags: identityData()?.identity.flags, 
+      flags: flags[identityData()?.identity.flags.toString(16)],
       canspendfor:identityData()?.canspendfor, 
       cansignfor: identityData()?.cansignfor, 
     }
@@ -67,8 +66,7 @@ export default function ListingCard(props: CardProps) {
 
       {isExpanded() ? (
         <AdditionalInfo>
-          <Typography size={14} weight={300}>Revocation Authority: {id()?.revocationauthority}</Typography>
-          <Typography size={14} weight={300}>Recovery Authority: {id()?.recoveryauthority}</Typography>
+          <Typography size={14} weight={300}>Listed: ~{id()?.created} days ago</Typography>
 
         </AdditionalInfo>
       ) : null}
