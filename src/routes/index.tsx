@@ -1,4 +1,4 @@
-import { useRouteData } from "solid-start";
+import { RouteDataArgs, useRouteData } from "solid-start";
 import { sortStore } from "~/stores";
 import ListingCard from "~/components/ListingCard/ListingCard";
 import { createResource, For } from "solid-js";
@@ -6,32 +6,44 @@ import axios from "axios";
 import generatePayload from "~/utils/generatePayload";
 import Sort from "~/components/Sort/Sort";
 import { createMemo } from "solid-js";
+import { createInfiniteScroll } from "@solid-primitives/pagination";
 
-export function routeData() {
-  const [ids] = createResource(async () => {
-    try {
-      const { data: vrsc_id_data } = await axios.post(
-        import.meta.env.VITE_SOLID_APP_RPC_URL,
-        generatePayload("getoffers", ["VRSC", "true", "false"]),
-        {
-          headers: {
-            ["Content-Type"]: "application/json",
-          },
-        }
-      );
+export function routeData(per_page: RouteDataArgs) {
+  const [ids] = createResource(
+    async () => {
+      try {
+        const requestBody: Record<string, any> = {
+          ...generatePayload("getoffers", ["VRSC", true, false]),
+        };
 
-      const { result } = vrsc_id_data;
+        console.log(per_page, "per page");
+        if (per_page) requestBody.per_page = per_page;
+        const { data: vrsc_id_data } = await axios.post(
+          import.meta.env.VITE_SOLID_APP_RPC_URL,
+          requestBody,
+          {
+            headers: {
+              ["Content-Type"]: "application/json",
+            },
+          }
+        );
+        const { result } = vrsc_id_data;
+        const keys = Object.keys(result);
+        const targetKey = keys.find((k: string) => {
+          return k.startsWith("ids_for_currency");
+        });
+        if (!targetKey) throw new Error("key not found");
 
-      const keys = Object.keys(result);
-      const targetKey = keys.find((k: string) => {
-        return k.startsWith("ids_for_currency");
-      });
-      if (!targetKey) throw new Error("key not found");
-      return result[targetKey];
-    } catch (e: any) {
-      return e.message;
-    }
-  });
+        console.log(result[targetKey], result[targetKey].length);
+
+        return result[targetKey];
+      } catch (e: any) {
+        console.log(e);
+        return e.message;
+      }
+    },
+    () => "testing"
+  );
   const [block] = createResource(async () => {
     try {
       const { data: block_hash } = await axios.post(
@@ -47,7 +59,7 @@ export function routeData() {
 
       const { data: block_data } = await axios.post(
         import.meta.env.VITE_SOLID_APP_RPC_URL,
-        generatePayload("getblock", [hash]),
+        generatePayload("getblock", [hash, true]),
         {
           headers: {
             ["Content-Type"]: "application/json",
@@ -56,8 +68,10 @@ export function routeData() {
       );
 
       const { result } = block_data;
+      console.log(result);
       return result;
     } catch (e: any) {
+      console.log(e);
       return e.message;
     }
   });

@@ -13,7 +13,9 @@ export const SortButton = styled("button")`
   background-color: #f5f5f5;
   padding: 10px 20px;
   border: 1px solid #ccc;
+  margin: 10px;
   border-radius: 5px;
+  white-space: nowrap;
   text-align: center;
   transition: background-color 0.3s ease;
   border-style: none;

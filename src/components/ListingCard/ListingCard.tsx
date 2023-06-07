@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import "./ListingCard.module.scss";
-import { Typography, Card, CardBody } from "./ListingCard.style";
+import { Typography, CardInfo, Card, AdditionalInfo, CardTitle, CardBody } from "./ListingCard.style";
 import { Expires } from "../Expires/Expires";
 
 type CardProps = {
@@ -12,19 +12,28 @@ type CardProps = {
 
 export default function ListingCard(props: CardProps) {
   const { name, currency, price, expires } = props;
+  const [isExpanded, setIsExpanded] = createSignal();
+  const handleClick = () => {
+
+    setIsExpanded(!isExpanded());
+  }
+  const description = ''
   return (
-    <Card>
-      <CardBody>
-        <Typography size={14} weight={300}>
-          {price} {currency}
-        </Typography>
-
-        <Typography size={25} weight={500}>
-          {name}
-        </Typography>
-
+    <Card
+      class={`card ${isExpanded() ? "card--expanded" : ""}`}
+      onClick={handleClick}
+    >
+      <CardInfo>
+        <CardTitle>{name}</CardTitle>
+        <Typography>Price: {price} VRSC</Typography>
         <Expires expires={expires} />
-      </CardBody>
+      </CardInfo>
+
+      {isExpanded() ? (
+        <AdditionalInfo>
+          <Typography>{description}</Typography>
+        </AdditionalInfo>
+      ) : null}
     </Card>
   );
 }
