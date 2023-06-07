@@ -1,16 +1,16 @@
-import {styled} from 'solid-styled-components';
+import { styled } from "solid-styled-components";
 
 export const NavbarContainer = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  background-color: rgba(19,130,119,0.9);
-  box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+  background-color: rgba(19, 130, 119, 0.9);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   height: 60px;
 `;
 export const SiteLogo = styled("img")`
-  height:50px;
+  height: 50px;
   width: auto;
 `;
 
@@ -20,7 +20,21 @@ export const SiteName = styled("div")`
 `;
 
 export const SiteTitle = styled("div")`
+  font-weight: 600;
+  text-align: center;
+  padding: 14px 16px;
   font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background:linear-gradient(45deg, #7795A1, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+`;
+
+export const SiteSubTitle = styled("div")`
+  font-size: 16px;
   font-weight: 500;
 `;
 
@@ -30,7 +44,7 @@ export const Details = styled("div")`
 `;
 
 export const CoffeeButton = styled("button")`
-  background-color: #FF813F;
+  background-color: #ff813f;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -41,6 +55,6 @@ export const CoffeeButton = styled("button")`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #FFA364;
+    background-color: #ffa364;
   }
 `;

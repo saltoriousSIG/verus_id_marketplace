@@ -24,5 +24,6 @@ export const SortButton = styled("button")`
   }
   &.highlight {
    background: linear-gradient(to right, #134e5e, #71b280);
+   color: azure;
   }
 `;

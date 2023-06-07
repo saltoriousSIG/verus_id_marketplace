@@ -15,7 +15,6 @@ export function Expires(props: ExpiresType) {
 
   const timeExpires = createMemo(() => {
     const { height } = block();
-    console.log(height);
     const difference = expires - height;
     const time_in_minutes = difference * 1;
     return dateMath.add(new Date(), time_in_minutes, "minutes").toDateString();

@@ -1,7 +1,11 @@
 import { styled } from "solid-styled-components";
+function doesntContaineEmoji(str: string) {
+  const regex = /^[A-Za-z0-9]+$/;
+  return regex.test(str);
+}
 
 export const Card = styled("div")`
-  background: rgb(6, 64, 75, 0.9);
+  background: rgba(6, 64, 75, 0.9);
   border-radius: 10px;
   box-shadow: 0px 14px 28px rgba(0, 0, 0, 0.1),
     0px 10px 10px rgba(0, 0, 0, 0.08);
@@ -10,13 +14,15 @@ export const Card = styled("div")`
   margin: 10px 20px;
   border-radius: 10px;
   padding: 25px;
-  width: 175px;
-  height:125px;
+  width: 185px;
+  height: 125px;
   cursor: pointer;
   overflow: hidden;
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  align-items: center;
 
   &.card--expanded {
     height: 400px;
@@ -35,14 +41,24 @@ export const CardInfo = styled("div")`
   order: 1;
 `;
 
-export const CardTitle = styled('h2')`
-  color: #1a202c;
+type TitleProps = {
+  value: string;
+};
+
+export const CardTitle = styled("h2")<TitleProps>`
+  background: ${(props) =>
+    !doesntContaineEmoji(props.value)
+      ? "transparent"
+      : "linear-gradient(45deg, #6CAC7E, #fff)"};
+  -webkit-background-clip: ${(props) =>
+    !doesntContaineEmoji(props.value) ? "unset" : "text"};
+  -webkit-text-fill-color: ${(props) =>
+    !doesntContaineEmoji(props.value) ? "unset" : "transparent"};
   font-weight: bold;
-  font-size: 25px;
+  font-size: 20px;
   margin: 0;
   margin-bottom: 10px;
 `;
-
 
 export const CardBody = styled("div")`
   padding: 20px;
@@ -51,21 +67,39 @@ export const CardBody = styled("div")`
 
 export const Typography = styled("p")`
   color: white;
-  font-family: "Roboto", sans-serif;
+  font-family: "Lato", sans-serif;
   line-height: 1.5;
   margin: 0;
   padding: 0;
+  white-space: normal;
   font-size: ${(props: any) => props.size}px;
   font-weight: ${(props: any) => props.weight};
+  overflow-wrap: anywhere;
 `;
 
-export const AdditionalInfo = styled('div')`
-  grid-column: span 2;
-  color: #4a5568;
-  display: none;
-  transition: all 1.3s ease-in-out;
-  overflow: hidden;
-
+export const AdditionalInfo = styled("div")`
+  display: flex;
+  color: white;
+  margin-top: 20px;
+  max-width: 100%;
+  flex-direction: column;
+  > * {
+    max-width: 100%;
+    margin: 8px;
+  }
+  > * {
+    &:not(:last-child) {
+      &::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 20px;
+        left: 20%;
+        padding: 5px 0;
+        border-bottom: 1px solid #d3d3d3;
+      }
+    }
+  }
   &.card--expanded {
   }
 `;

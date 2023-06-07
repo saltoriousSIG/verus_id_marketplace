@@ -1,5 +1,5 @@
 import { RouteDataArgs, useRouteData } from "solid-start";
-import { sortStore } from "~/stores";
+import { sortStore, searchStore } from "~/stores";
 import ListingCard from "~/components/ListingCard/ListingCard";
 import { createResource, For } from "solid-js";
 import axios from "axios";
@@ -7,6 +7,8 @@ import generatePayload from "~/utils/generatePayload";
 import Sort from "~/components/Sort/Sort";
 import { createMemo } from "solid-js";
 import { createInfiniteScroll } from "@solid-primitives/pagination";
+import Search from "~/components/Search/Search";
+
 
 export function routeData(per_page: RouteDataArgs) {
   const [ids] = createResource(
@@ -16,7 +18,6 @@ export function routeData(per_page: RouteDataArgs) {
           ...generatePayload("getoffers", ["VRSC", true, false]),
         };
 
-        console.log(per_page, "per page");
         if (per_page) requestBody.per_page = per_page;
         const { data: vrsc_id_data } = await axios.post(
           import.meta.env.VITE_SOLID_APP_RPC_URL,
@@ -36,7 +37,6 @@ export function routeData(per_page: RouteDataArgs) {
 
         return result[targetKey];
       } catch (e: any) {
-        console.log(e);
         return e.message;
       }
     },
@@ -65,10 +65,8 @@ export function routeData(per_page: RouteDataArgs) {
       );
 
       const { result } = block_data;
-      console.log(result);
       return result;
     } catch (e: any) {
-      console.log(e);
       return e.message;
     }
   });
@@ -82,11 +80,21 @@ export default function Home() {
     return <div>There was an issue fetching the ids!</div>;
 
   const { store } = sortStore;
+  const { store: search_store } = searchStore;
 
   const listings = createMemo(() => {
     const direction = store.currentSelection[1];
-    const _ids = ids() || [];
+    let _ids = search_store.ids ? search_store.ids : ids() || [];
  
+    if (search_store.ids) { 
+      if (search_store.ids.length === 0) { 
+        _ids = ids() || []
+      } else {
+        _ids = search_store.ids
+      }
+    } else { 
+      _ids = ids() || [];
+    }
     switch (store.currentSelection[0]) {
       case "priceSortDirection":
         if (direction === "ASC") {
@@ -115,17 +123,19 @@ export default function Home() {
       <div style="display:flex; flex-direction:column;">
         <div>
           <Sort />
+          <Search ids={listings()} />
         </div>
         <div class="container">
           <For each={listings()}>
             {(vrscid) => (
               <ListingCard
+                iid={vrscid.identityid}
                 name={vrscid.offer.offer.name}
                 currency={"VRSC"}
                 price={vrscid.price}
                 expires={vrscid.offer.blockexpiry}
               />
-            )}
+            )} 
           </For>
         </div>
       </div>
