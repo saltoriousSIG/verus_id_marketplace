@@ -34,15 +34,12 @@ export function routeData(per_page: RouteDataArgs) {
         });
         if (!targetKey) throw new Error("key not found");
 
-        console.log(result[targetKey], result[targetKey].length);
-
         return result[targetKey];
       } catch (e: any) {
         console.log(e);
         return e.message;
       }
     },
-    () => "testing"
   );
   const [block] = createResource(async () => {
     try {
@@ -80,6 +77,7 @@ export function routeData(per_page: RouteDataArgs) {
 
 export default function Home() {
   const { ids } = useRouteData<typeof routeData>();
+  console.log(ids())
   if (typeof ids() === "string")
     return <div>There was an issue fetching the ids!</div>;
 
@@ -88,6 +86,7 @@ export default function Home() {
   const listings = createMemo(() => {
     const direction = store.currentSelection[1];
     const _ids = ids() || [];
+ 
     switch (store.currentSelection[0]) {
       case "priceSortDirection":
         if (direction === "ASC") {
