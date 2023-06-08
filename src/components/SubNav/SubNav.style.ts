@@ -1,5 +1,7 @@
 import { styled } from "solid-styled-components";
 
+import { breakpoints } from "~/utils/breakpoints"; 
+
 export const SubNavBar = styled("div")`
   display: flex;
   justify-content: space-between;
@@ -20,4 +22,12 @@ export const SubNavBar = styled("div")`
   margin-bottom: 24px;
   max-height: fit-content;
   max-width: 90%;
+
+  @media (max-width: ${breakpoints.mobile.max}px) {
+    flex-direction: column;
+    > div {
+      padding-bottom: 15px;
+    }
+  }
+
 `;

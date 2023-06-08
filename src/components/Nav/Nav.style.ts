@@ -1,4 +1,5 @@
 import { styled } from "solid-styled-components";
+import { breakpoints } from "~/utils/breakpoints";
 
 export const NavbarContainer = styled("div")`
   display: flex;
@@ -28,10 +29,14 @@ export const SiteTitle = styled("div")`
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  background:linear-gradient(45deg, #7795A1, #fff);
+  background: linear-gradient(45deg, #7795a1, #fff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
+
+  @media (max-width: ${breakpoints.mobile.max}px) {
+    font-size: 14px;
+    text-align: left;
+  }
 `;
 
 export const SiteSubTitle = styled("div")`

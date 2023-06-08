@@ -92,9 +92,6 @@ export default function Home() {
         <div>
           <SubNav listing={listings()} />
         </div>
-        <div class='container' style='justify-content: flex-start'>
-          <h1 style="font-size: 35px; margin:unset; font-weight:400; margin-left: 3%; margin-bottom: 15px;">Current Block: {block()?.height}</h1>
-        </div>
         <div class="container"  style='justify-content: center'>
           <For each={listings()}>
             {(vrscid) => (

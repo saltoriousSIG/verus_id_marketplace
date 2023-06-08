@@ -11,6 +11,7 @@ import {
   Routes,
   Scripts,
   Title,
+  unstable_clientOnly
 } from "solid-start";
 import "./root.css";
 import Nav from "./components/Nav/Nav";
