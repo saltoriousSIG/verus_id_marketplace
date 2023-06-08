@@ -2,12 +2,11 @@ import { useRouteData } from "solid-start";
 import { sortStore, searchStore } from "~/stores";
 import ListingCard from "~/components/ListingCard/ListingCard";
 import { createResource, For } from "solid-js";
-import Sort from "~/components/Sort/Sort";
 import { createMemo } from "solid-js";
-import Search from "~/components/Search/Search";
 import fetchRpcUrl from "~/utils/fetchRpcUrl";
 import fetchOffers from "~/utils/data-utils/fetchOffers";
 import fetchBlockInfo from "~/utils/data-utils/fetchBlockInfo";
+import SubNav from "~/components/SubNav/SubNav";
 
 const { rpc_url, fallback } = fetchRpcUrl();
 
@@ -91,8 +90,7 @@ export default function Home() {
     <main>
       <div style="display:flex; flex-direction:column;">
         <div>
-          <Sort />
-          <Search ids={listings()} />
+          <SubNav listing={listings()} />
         </div>
         <div class='container' style='justify-content: flex-start'>
           <h1 style="font-size: 35px; margin:unset; font-weight:400; margin-left: 3%; margin-bottom: 15px;">Current Block: {block()?.height}</h1>

@@ -1,10 +1,6 @@
 import { styled } from "solid-styled-components";
 
 export const Input = styled("input")`
-  width: 25%;
-  padding: 10px 20px;
-  margin: 8px 0;
-  margin-bottom: 25px;
   box-sizing: border-box;
   border: none;
   border-bottom: 2px solid #888;
