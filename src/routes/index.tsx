@@ -1,72 +1,42 @@
-import { RouteDataArgs, useRouteData } from "solid-start";
+import { useRouteData } from "solid-start";
 import { sortStore, searchStore } from "~/stores";
 import ListingCard from "~/components/ListingCard/ListingCard";
 import { createResource, For } from "solid-js";
-import axios from "axios";
-import generatePayload from "~/utils/generatePayload";
 import Sort from "~/components/Sort/Sort";
 import { createMemo } from "solid-js";
-import { createInfiniteScroll } from "@solid-primitives/pagination";
 import Search from "~/components/Search/Search";
+import fetchRpcUrl from "~/utils/fetchRpcUrl";
+import fetchOffers from "~/utils/data-utils/fetchOffers";
+import fetchBlockInfo from "~/utils/data-utils/fetchBlockInfo";
 
+const { rpc_url, fallback } = fetchRpcUrl();
 
-export function routeData(per_page: RouteDataArgs) {
-  const [ids] = createResource(
-    async () => {
-      try {
-        const requestBody: Record<string, any> = {
-          ...generatePayload("getoffers", ["VRSC", true, false]),
-        };
-
-        if (per_page) requestBody.per_page = per_page;
-        const { data: vrsc_id_data } = await axios.post(
-          import.meta.env.VITE_SOLID_APP_RPC_URL,
-          requestBody,
-          {
-            headers: {
-              ["Content-Type"]: "application/json",
-            },
-          }
-        );
-        const { result } = vrsc_id_data;
-        const keys = Object.keys(result);
-        const targetKey = keys.find((k: string) => {
-          return k.startsWith("ids_for_currency");
-        });
-        if (!targetKey) throw new Error("key not found");
-
-        return result[targetKey];
-      } catch (e: any) {
-        return e.message;
-      }
-    },
-  );
+export function routeData() {
+  const [ids] = createResource(async () => {
+    try {
+      return await fetchOffers(rpc_url);
+    } catch (e: any) {
+      if (fallback) {
+        try {
+          return await fetchOffers(fallback);
+        } catch(e: any){
+          return e.message;
+        }
+      } 
+      return e.message;
+    }
+  });
   const [block] = createResource(async () => {
     try {
-      const { data: block_hash } = await axios.post(
-        import.meta.env.VITE_SOLID_APP_RPC_URL,
-        generatePayload("getbestblockhash", []),
-        {
-          headers: {
-            ["Content-Type"]: "application/json",
-          },
-        }
-      );
-      const { result: hash } = block_hash;
-
-      const { data: block_data } = await axios.post(
-        import.meta.env.VITE_SOLID_APP_RPC_URL,
-        generatePayload("getblock", [hash, true]),
-        {
-          headers: {
-            ["Content-Type"]: "application/json",
-          },
-        }
-      );
-
-      const { result } = block_data;
-      return result;
+      return await fetchBlockInfo(rpc_url);
     } catch (e: any) {
+      if (fallback) {
+        try {
+          return await fetchBlockInfo(fallback);
+        } catch(e: any) {
+          return e.message;
+        }
+      }
       return e.message;
     }
   });
@@ -74,8 +44,7 @@ export function routeData(per_page: RouteDataArgs) {
 }
 
 export default function Home() {
-  const { ids } = useRouteData<typeof routeData>();
-  console.log(ids())
+  const { ids, block } = useRouteData<typeof routeData>();
   if (typeof ids() === "string")
     return <div>There was an issue fetching the ids!</div>;
 
@@ -85,14 +54,14 @@ export default function Home() {
   const listings = createMemo(() => {
     const direction = store.currentSelection[1];
     let _ids = search_store.ids ? search_store.ids : ids() || [];
- 
-    if (search_store.ids) { 
-      if (search_store.ids.length === 0) { 
-        _ids = ids() || []
+
+    if (search_store.ids) {
+      if (search_store.ids.length === 0) {
+        _ids = ids() || [];
       } else {
-        _ids = search_store.ids
+        _ids = search_store.ids;
       }
-    } else { 
+    } else {
       _ids = ids() || [];
     }
     switch (store.currentSelection[0]) {
@@ -125,7 +94,10 @@ export default function Home() {
           <Sort />
           <Search ids={listings()} />
         </div>
-        <div class="container">
+        <div class='container' style='justify-content: flex-start'>
+          <h1 style="font-size: 35px; margin:unset; font-weight:400; margin-left: 3%; margin-bottom: 15px;">Current Block: {block()?.height}</h1>
+        </div>
+        <div class="container"  style='justify-content: center'>
           <For each={listings()}>
             {(vrscid) => (
               <ListingCard
@@ -135,7 +107,7 @@ export default function Home() {
                 price={vrscid.price}
                 expires={vrscid.offer.blockexpiry}
               />
-            )} 
+            )}
           </For>
         </div>
       </div>

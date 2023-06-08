@@ -15,7 +15,7 @@ export const Card = styled("div")`
   border-radius: 10px;
   padding: 25px;
   width: 185px;
-  height: 125px;
+  height: 175px;
   cursor: pointer;
   overflow: hidden;
   position: relative;
@@ -25,8 +25,8 @@ export const Card = styled("div")`
   align-items: center;
 
   &.card--expanded {
-    height: 400px;
-    width: 235px;
+    height: 450px;
+    width: 300px;
   }
 
   &:hover {
@@ -55,7 +55,8 @@ export const CardTitle = styled("h2")<TitleProps>`
   -webkit-text-fill-color: ${(props) =>
     !doesntContaineEmoji(props.value) ? "unset" : "transparent"};
   font-weight: bold;
-  font-size: ${props => !doesntContaineEmoji(props.value) ? '30px' : '20px'};
+  font-size: ${(props) =>
+    !doesntContaineEmoji(props.value) ? "30px" : "20px"};
   margin: 0;
   margin-bottom: 10px;
 `;
@@ -77,26 +78,35 @@ export const Typography = styled("p")`
   overflow-wrap: anywhere;
 `;
 
+export const Link = styled("a")`
+  margin: 0;
+  &:hover {
+    color: #1d847b;
+  }
+`;
+
 export const AdditionalInfo = styled("div")`
   display: flex;
   color: white;
   margin-top: 20px;
   max-width: 100%;
   flex-direction: column;
+  
   > * {
     max-width: 100%;
-    margin: 8px;
+    padding: 10px;
   }
   > * {
+    position: relative;
     &:not(:last-child) {
       &::after {
         content: "";
         position: absolute;
-        width: 60%;
+        width: 40%;
+        transform: translateY(50%);
         height: 20px;
-        left: 20%;
-        padding: 5px 0;
-        border-bottom: 1px solid #d3d3d3;
+        left: 30%;
+        border-bottom: 1px solid #1D847B;
       }
     }
   }

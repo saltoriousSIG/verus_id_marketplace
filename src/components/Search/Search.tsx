@@ -2,7 +2,6 @@ import { searchStore } from "~/stores";
 import { debounce } from "@solid-primitives/scheduled";
 import { Input } from "./Search.style";
 
-
 type SearchProps = {
   ids: any[];
 };
@@ -18,6 +17,7 @@ export default function Search(props: SearchProps) {
   const handleCheck = () => { 
     setToggleFuzzySearch(ref);
   }
+
   return (
     <div style="margin-bottom: 25px;">
       <Input
@@ -29,7 +29,7 @@ export default function Search(props: SearchProps) {
         }}
       />
       <div>
-        <label>Enable Fuzzy Search</label>
+        <label style='margin: 0 8px;'>Enable Fuzzy Search</label>
         <input ref={ref} type='checkbox' onChange={handleCheck} />
       </div>
     </div>

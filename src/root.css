@@ -1,4 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
+
   font-family: 'Raleway', sans-serif; 
   background-color: rgba(100, 134, 149, 0.875);
 }
@@ -44,5 +49,6 @@ p {
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: center;
-
+  max-width:90%;
+  margin: auto;
 }

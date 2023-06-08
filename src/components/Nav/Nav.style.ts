@@ -8,6 +8,7 @@ export const NavbarContainer = styled("div")`
   background-color: rgba(19, 130, 119, 0.9);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   height: 60px;
+  margin: 10px;
 `;
 export const SiteLogo = styled("img")`
   height: 50px;
