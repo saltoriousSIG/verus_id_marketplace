@@ -94,7 +94,7 @@ export const AdditionalInfo = styled("div")`
   
   > * {
     max-width: 100%;
-    padding: 10px;
+    padding: 10px !important;
   }
   > * {
     position: relative;
