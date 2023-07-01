@@ -10,7 +10,7 @@ const fetchRpcUrl = () => {
   }
   return {
     rpc_url,
-    fallback: import.meta.env.VITE_SOLID_APP_PROD_RPC_URL_1;
+    fallback: import.meta.env.VITE_SOLID_APP_PROD_RPC_URL_1
   };
 
 };
